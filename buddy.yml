@@ -1,0 +1,203 @@
+- pipeline: "Deploy to development (hosting only)"
+  on: "EVENT"
+  events:
+    - type: "PUSH"
+      refs:
+        - "refs/heads/develop"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+  actions:
+    - action: "Execute: npm run build"
+      type: "BUILD"
+      working_directory: "/buddy/element-app"
+      docker_image_name: "library/node"
+      docker_image_tag: "12"
+      execute_commands:
+        - "# run npm install and build the nuxt application"
+        - "npm install"
+        - "npm run build"
+        - ""
+        - "# run npm install in the firebase functions directory as it uses seperate package.json"
+        - "cd functions/"
+        - "npm install"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      shell: "BASH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+    - action: "Execute: firebase deploy --non-interactive --only hosting"
+      type: "FIREBASE"
+      working_directory: "/buddy/element-app"
+      version: "14"
+      application_id: "element-app-development"
+      execute_commands:
+        - "firebase deploy --non-interactive --only hosting"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      build_tool_version: "8.19.0"
+      shell: "SH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+      integration_hash: "ZA1oRkpQJ0dNX6YLaLOvE2Mwz5"
+  trigger_conditions:
+    - trigger_condition: "ALWAYS"
+- pipeline: "Deploy to development (hosting and functions)"
+  on: "CLICK"
+  refs:
+    - "refs/heads/develop"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+  actions:
+    - action: "Execute: npm run build"
+      type: "BUILD"
+      working_directory: "/buddy/element-app"
+      docker_image_name: "library/node"
+      docker_image_tag: "12"
+      execute_commands:
+        - "# run npm install and build the nuxt application"
+        - "npm install"
+        - "npm run build"
+        - ""
+        - "# run npm install in the firebase functions directory as it uses seperate package.json"
+        - "cd functions/"
+        - "npm install"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      shell: "BASH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+    - action: "Execute: firebase deploy --non-interactive"
+      type: "FIREBASE"
+      working_directory: "/buddy/element-app"
+      version: "14"
+      application_id: "element-app-development"
+      execute_commands:
+        - "firebase deploy --non-interactive"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      build_tool_version: "8.19.0"
+      shell: "SH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+      integration_hash: "ZA1oRkpQJ0dNX6YLaLOvE2Mwz5"
+  trigger_conditions:
+    - trigger_condition: "ALWAYS"
+- pipeline: "Deploy to staging"
+  on: "EVENT"
+  events:
+    - type: "PUSH"
+      refs:
+        - "refs/heads/staging"
+  priority: "NORMAL"
+  fail_on_prepare_env_warning: true
+  actions:
+    - action: "Execute: npm run build"
+      type: "BUILD"
+      working_directory: "/buddy/element-app"
+      docker_image_name: "library/node"
+      docker_image_tag: "12"
+      execute_commands:
+        - "# run npm install and build the nuxt application"
+        - "npm install"
+        - "npm run build"
+        - ""
+        - "# run npm install in the firebase functions directory as it uses seperate package.json"
+        - "cd functions/"
+        - "npm install"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      shell: "BASH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+    - action: "Execute: firebase deploy --non-interactive"
+      type: "FIREBASE"
+      working_directory: "/buddy/element-app"
+      version: "14"
+      application_id: "element-app-staging"
+      execute_commands:
+        - "firebase deploy --non-interactive"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      build_tool_version: "8.19.0"
+      shell: "SH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+      integration_hash: "ZA1oRkpQJ0dNX6YLaLOvE2Mwz5"
+  trigger_conditions:
+    - trigger_condition: "ALWAYS"
+- pipeline: "Deploy to production"
+  on: "CLICK"
+  refs:
+    - "refs/heads/master"
+  priority: "NORMAL"
+  target_site_url: "https://app.element-transfers.com"
+  fail_on_prepare_env_warning: true
+  actions:
+    - action: "Execute: npm run build"
+      type: "BUILD"
+      working_directory: "/buddy/element-app"
+      docker_image_name: "library/node"
+      docker_image_tag: "12"
+      execute_commands:
+        - "# run npm install and build the nuxt application"
+        - "npm install"
+        - "npm run build"
+        - ""
+        - "# run npm install in the firebase functions directory as it uses seperate package.json"
+        - "cd functions/"
+        - "npm install"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      shell: "BASH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+    - action: "Execute: firebase deploy --non-interactive"
+      type: "FIREBASE"
+      working_directory: "/buddy/element-app"
+      version: "14"
+      application_id: "element-app-production"
+      execute_commands:
+        - "firebase deploy --non-interactive"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      build_tool_version: "8.19.0"
+      shell: "SH"
+      integration_hash: "ZA1oRkpQJ0dNX6YLaLOvE2Mwz5"
+- pipeline: "Deploy to production (hosting only)"
+  on: "CLICK"
+  refs:
+    - "refs/heads/master"
+  priority: "NORMAL"
+  target_site_url: "https://app.element-transfers.com"
+  fail_on_prepare_env_warning: true
+  actions:
+    - action: "Execute: npm run build"
+      type: "BUILD"
+      working_directory: "/buddy/element-app"
+      docker_image_name: "library/node"
+      docker_image_tag: "12"
+      execute_commands:
+        - "# run npm install and build the nuxt application"
+        - "npm install"
+        - "npm run build"
+        - ""
+        - "# run npm install in the firebase functions directory as it uses seperate package.json"
+        - "cd functions/"
+        - "npm install"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      shell: "BASH"
+      trigger_conditions:
+        - trigger_condition: "ALWAYS"
+    - action: "Execute: firebase deploy --non-interactive --only hosting"
+      type: "FIREBASE"
+      working_directory: "/buddy/element-app"
+      version: "14"
+      application_id: "element-app-production"
+      execute_commands:
+        - "firebase deploy --non-interactive --only hosting"
+      volume_mappings:
+        - "/:/buddy/element-app"
+      build_tool_version: "8.19.0"
+      shell: "SH"
+      integration_hash: "ZA1oRkpQJ0dNX6YLaLOvE2Mwz5"

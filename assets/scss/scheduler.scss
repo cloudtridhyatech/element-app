@@ -1,0 +1,48 @@
+.c74-highlight-event {
+  box-shadow: 0px 0px 40px 20px #0ff;
+  font-weight: bold;
+}
+
+.c74-event-version {
+  padding: 4px;
+}
+
+.c74-event-version-start {
+  padding-top: 4px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.c74-event-version-end {
+  padding-top: 4px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.c74-event-version-status-started {
+  background-color: #7bed9f;
+}
+
+.c74-event-version-status-picking-up-passengers {
+  background-color: #eccc68;
+}
+
+.c74-event-version-status-en-route-passengers-on-board {
+  background-color: #2ed573;
+}
+
+.c74-event-version-status-dropping-off-passengers {
+  background-color: #1e90ff;
+}
+
+.c74-event-version-status-en-route-empty {
+  background-color: #b2bec3;
+}
+
+.c74-event-version-status-finished {
+  background-color: #ff6348;
+}
+
+.c74-event-version-status-cancelled {
+  background-color: #00b894;
+}

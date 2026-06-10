@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es2018",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["esnext", "esnext.asynciterable", "dom"],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    },
+
+    /*
+     * Notes on installing Moment
+     * https://github.com/nuxt-community/moment-module
+     */
+    "types": ["@types/node", "@nuxt/types", "@nuxtjs/moment"]
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"]
+}

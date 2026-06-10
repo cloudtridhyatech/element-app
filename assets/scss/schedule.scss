@@ -1,0 +1,24 @@
+.c74-confirmed-transfers,
+.c74-scheduled-transfers {
+  .c74-flight-departure,
+  .c74-flight-arrival {
+    color: #fff;
+  }
+
+  .c74-flight-departure {
+    border: 1px solid #bdc3c7;
+    background-color: #bdc3c7;
+  }
+
+  .c74-flight-arrival {
+    border: 1px solid #95a5a6;
+    background-color: #95a5a6;
+  }
+  .c74-confirmed-transfer,
+  .c74-scheduled-transfer {
+    margin-bottom: 6px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+}

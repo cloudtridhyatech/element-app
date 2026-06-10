@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply styling specifically to the embed form */
+.embed-form .el-form--label-top .el-form-item__label {
+  @apply p-0 leading-8; /* bring form labels and their inputs closer together */
+}
+
+.embed-form .el-select,
+.embed-form .el-input,
+.embed-form .el-input-number,
+.embed-form .el-date-editor.el-input {
+  @apply w-full; /* let form inputs go full width of container (withing grid layouts) */
+}
+
+.embed-form .el-radio.is-bordered + .el-radio.is-bordered {
+  @apply ml-0; /* remove the left margin applied to adjascent bordered radio buttons by element ui */
+}

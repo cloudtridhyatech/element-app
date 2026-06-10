@@ -1,0 +1,175 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+    	return request.auth.uid == userId;
+    }
+
+    match /companies/{companyId} {
+
+      allow read: if true;
+
+      // all writes are denied for 'companies' be default so no rule declarations made here
+
+      function getRoles() {
+				return get(/databases/$(database)/documents/companies/$(companyId)/users/$(request.auth.uid)).data.roles;
+	    }
+
+      function isUserInThisCompany() {
+        return exists(/databases/$(database)/documents/companies/$(companyId)/users/$(request.auth.uid))
+      }
+
+      match /accommodations/{accommodationId} {
+      	allow read:	if isSignedIn()
+                    && getRoles().hasAny(['accommodation-admin', 'driver-admin']) == true
+                    && isUserInThisCompany();
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+															&& getRoles().hasAny(['accommodation-admin']) == true;
+
+      }
+
+      match /bookings/{bookingId} {
+      	allow read: if isSignedIn()
+									  && isUserInThisCompany()
+                    && getRoles().hasAny(['booking-admin']) == true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['booking-admin']) == true;
+
+      }
+
+      match /drivers/{driverId} {
+      	allow read:if isSignedIn() && getRoles().hasAny(['driver-admin']) == true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['driver-admin']) == true;
+      }
+
+      match /events/{eventId} {
+      	allow read:if isSignedIn() && getRoles().hasAny(['scheduler-admin', 'driver-admin']) == true;
+
+        allow create, update, delete: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['scheduler-admin', 'driver-admin']) == true;
+      }
+
+      match /journies/{journeyId} {
+      	allow read:if isSignedIn() && getRoles().hasAny(['journey-admin', 'driver-admin']) == true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['journey-admin']) == true;
+      }
+
+      match /notes/{noteId} {
+      	allow read:if isSignedIn() && getRoles().hasAny(['scheduler-admin', 'driver-admin']) == true;
+
+        allow create, update: if isSignedIn() && isUserInThisCompany()
+      }
+
+      match /places/{placeId} {
+      	allow read:if true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['place-and-route-admin']) == true;
+      }
+
+      match /placeGroups/{placeGroupId} {
+      	allow read:if isSignedIn() && (getRoles().hasAny(['place-and-route-admin', 'driver-admin']) == true);
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['place-and-route-admin']) == true;
+      }
+
+      match /pricingRules/{pricingRuleId} {
+      	allow read:if isSignedIn() && (getRoles().hasAny(['pricing-rules-admin']) == true);
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['pricing-rules-admin']) == true;
+      }
+
+      match /pricingRulesCache/{pricingRuleCacheId} {
+      	allow read:if true;
+
+        // create and update are handled by callable statements only so we do not need
+        // to allow end user to create or update
+      }
+
+      match /routes/{routeId} {
+      	allow read:if true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['place-and-route-admin']) == true;
+      }
+
+      match /tourOperators/{tourOperatorId} {
+      	allow read:if isSignedIn() && (getRoles().hasAny(['tour-operator-admin']) == true);
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['tour-operator-admin']) == true;
+      }
+
+      match /users/{userId} {
+        allow read:if isSignedIn()
+                   && isUserInThisCompany();
+        
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['user-admin']) == true;
+      }
+
+      match /vehicles/{vehicleId} {
+      	allow read:if isSignedIn() && getRoles().hasAny(['vehicle-admin']) == true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['vehicle-admin']) == true;
+      }
+
+      match /tags/{tagId} {
+      	allow read:if isSignedIn() && getRoles().hasAny(['pricing-rules-admin']) == true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany()
+                              && getRoles().hasAny(['pricing-rules-admin']) == true;
+      }
+
+      match /settings/--settings-- {
+      	allow read:if isSignedIn();
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany();
+      }
+
+      match /settings/--editableSettings-- {
+      	allow read:if true;
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany();
+      }
+
+      match /transfers/{transferId} {
+      	allow read:if isSignedIn();
+
+        allow create, update: if isSignedIn()
+															&& isUserInThisCompany();
+      }
+
+    }
+
+  }
+}

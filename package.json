@@ -1,0 +1,49 @@
+{
+  "name": "element-app",
+  "version": "1.0.0",
+  "description": "Transfer Booking System",
+  "author": "Robin Mannering",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt-ts",
+    "fb-emulator": "firebase emulators:start --import data/seed-with-journies",
+    "firebase-emulator-with-local-auth": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 firebase emulators:start --import=data/seed-with-journies-and-settings",
+    "firebase-emulator-with-local-auth-and-setup": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 firebase emulators:exec 'node ./setup-emulator.js' --import=data/seed-with-journies-and-settings --ui",
+    "firebase-emulator-with-local-auth-debug": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 firebase emulators:start --import=data/seed-with-journies-and-settings --inspect-functions",
+    "firebase-emulator-with-local-auth-debug-setup": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 firebase emulators:exec 'node ./setup-emulator.js' --import=data/seed-with-journies-and-settings --ui --inspect-functions",
+    "build": "nuxt-ts build",
+    "generate": "nuxt-ts generate",
+    "start": "nuxt-ts start",
+    "deploy-all": "nuxt-ts build && firebase deploy",
+    "deploy-hosting-only": "nuxt-ts build && firebase deploy --only hosting",
+    "deploy-functions-only": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "@nuxt/typescript-runtime": "^0.4.0",
+    "@nuxtjs/axios": "^5.11.0",
+    "algoliasearch": "^4.4.0",
+    "daypilot-pro-vue": "https://npm.daypilot.org/daypilot-pro-vue/trial/2022.1.5225.tar.gz",
+    "element-ui": "^2.15.1",
+    "faker": "^5.1.0",
+    "firebase": "^7.14.4",
+    "lodash.clonedeep": "^4.5.0",
+    "logrocket": "^1.0.7",
+    "nuxt": "^2.14.12",
+    "stripe": "^8.145.0",
+    "swiper": "^6.3.5",
+    "vue-awesome-swiper": "^4.1.1",
+    "vue-json-pretty": "^1.6.3",
+    "vuefire": "^2.2.2",
+    "vuelidate": "^0.7.6"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.13.3",
+    "@nuxt/typescript-build": "^0.6.7",
+    "@nuxtjs/moment": "^1.6.1",
+    "@nuxtjs/style-resources": "^1.0.0",
+    "@nuxtjs/tailwindcss": "^3.4.1",
+    "firebase-admin": "^9.3.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2"
+  }
+}
